@@ -53,7 +53,7 @@ if(range.has(k)||attack.has(k))polygon(pts,range.has(k)?'#48d5c599':'#f06c718c',
 if(pending&&pending.x===tile.x&&pending.y===tile.y)polygon(pts,'#efc45b99','#fff1bb',3*scale);
 if(tile.walk){
 ctx.fillStyle='#243d45c9';ctx.fillRect(p.x+tw*.56-14*scale,p.y-th*.38+2*scale,12*scale,11*scale);
-ctx.fillStyle='#fff';ctx.font=\`bold \${9*scale}px system-ui\`;ctx.textAlign='center';ctx.fillText(tile.h,p.x+tw*.56-8*scale,p.y-th*.38+11*scale)
+ctx.fillStyle='#fff';ctx.font=(9*scale)+'px system-ui';ctx.textAlign='center';ctx.fillText(tile.h,p.x+tw*.56-8*scale,p.y-th*.38+11*scale)
 }
 return p
 }
