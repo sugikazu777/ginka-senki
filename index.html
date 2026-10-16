@@ -46,7 +46,7 @@ function paintTileImage(kind,corners){
  const im=terrainTextures[kind];if(!im)return;
  const a=corners[0],b=corners[1],d=corners[3];
  ctx.save();ctx.beginPath();ctx.moveTo(a[0],a[1]);for(let i=1;i<4;i++)ctx.lineTo(corners[i][0],corners[i][1]);ctx.closePath();ctx.clip();
- ctx.setTransform((b[0]-a[0])/im.width,(b[1]-a[1])/im.width,(d[0]-a[0])/im.height,(d[1]-a[1])/im.height,a[0],a[1]);ctx.drawImage(im,0,0);
+ ctx.transform((b[0]-a[0])/im.width,(b[1]-a[1])/im.width,(d[0]-a[0])/im.height,(d[1]-a[1])/im.height,a[0],a[1]);ctx.drawImage(im,0,0);
  ctx.restore();
 }
 function renderTile(tile,range,attack){
@@ -62,6 +62,7 @@ if(tile.type==='rock')fill='#819497';
 // sides as luminous silver limestone blocks. Surface shape and hit geometry unchanged.
 polygon([pts[3],pts[2],low[2],low[3]],tile.type==='water'?'#315d73':'#839498','#d3dad4',.65*scale);
 polygon([pts[0],pts[3],low[3],low[0]],tile.type==='water'?'#274f66':'#617a82','#afc3c4',.65*scale);
+if(tile.type!=='water'){paintTileImage('wall',[pts[3],pts[2],low[2],low[3]]);paintTileImage('wall',[pts[0],pts[3],low[3],low[0]])}
 if(tile.type!=='water'){
 ctx.save();ctx.strokeStyle='#d0dad5aa';ctx.lineWidth=.75*scale;
 for(let t=.26;t<.95;t+=.27){ctx.beginPath();ctx.moveTo(pts[3][0],pts[3][1]+depth*t);ctx.lineTo(pts[2][0],pts[2][1]+depth*t);ctx.stroke()}
