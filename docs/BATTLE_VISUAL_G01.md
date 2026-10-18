@@ -7,7 +7,7 @@
 
 参考画像 `IMG_4655.jpeg` に示された、美麗なファンタジー戦術SLGの画面密度・表現・操作感を、最短の実装サイクルで実現する。
 
-- **戦闘画面**: 高品質な固定視点2.5D戦場＋精細な2Dキャラクター＋戦術的に判読できるHUD。必要ならUnityへ移行する。
+- **戦闘画面**: 高品質な固定視点2.5D戦場＋精細な2Dキャラクター＋戦術的に判読できるHUD。**エンジンは手段として選定し、Unityには固定しない。**
 - **街探索**: 現行 `town/index.html` をHTMLプロトタイプとして維持する。今回は街に機能追加しない。
 - **正本**: 既存 `index.html` の P05.4 を破壊・上書きしない。既存の移動・攻撃・EXP・固定成長・ミッションを仕様参照として保持。
 
@@ -27,8 +27,11 @@
 - **ランタイムは軽量に**: 固定視点を活かし、描画済み地形を基本とし、論理マス／高さ／通行可否は別データで管理。
 - スクリーンショットを丸ごと背景にすると、焼き込まれたキャラクターや射程が残り、インタラクションに破綻が出る。**一枚絵の貼り込みを完成扱いしない**。
 - リリアなどのキャラクターは基準素材・統一制作フローを設け、スプライト差分でidentityを保つ。
-- Unity採用時はOrthographic camera＋URP＋SpriteRenderer／Canvas／必要最小限のMeshを基本とする。初期実装は静的な小マップ・少数ユニットで検証。
-- Unity WebはiOS Safariをサポートするが、起動サイズ・メモリ／フレームレートに注意して実機で評価する。
+- **まずPixiJS v8＋TypeScriptを第一候補**に、ブラウザ上で参考画像に近い表現を実装する。GPU描画はWebGLを優先。現行P05.4のJS戦術ロジックは移植・分離して再利用する。
+- **Phaser 3/4を第二候補**にする。標準2DゲームAPIやPhaser Editor v5のMCPを活用したい場合に比較する。Phaser Editor v5のMCPはベータ／契約条件を要確認。
+- **Unityを第三候補**とし、真の3D地形編集や複数視点が必要になったときに再検討する。公式Unity MCPはAI beta（Unity 6、Cloud連携、AI trial/契約など条件あり）。
+- **Godotは比較対象**として、CLIによるヘッドレス編集・テスト・ビルドとコミュニティMCPを評価する。
+- iPhoneのSafariでのロード時間、ピークメモリ、FPSを実測する。
 
 ## 先行する3つの成果物
 
@@ -59,3 +62,32 @@
 ## 守るべき開発運用
 
 現在のGitHub Pagesの戦闘版 (`index.html`) と街探索版 (`town/index.html`) は改変しない。新規の戦闘ビジュアル試作は別フォルダ／別Unityプロジェクトに隔離する。画像の忠実度とゲームの操作可能性を別々に検証してから統合する。
+
+
+## エージェント駆動開発の必須条件（2026-10-18追加）
+
+**ゲームの見栄えだけでなく、エージェントによる「実装→起動→操作→スクリーンショット→比較→修正→再テスト→コミット」を継続できることを必須とする。**
+
+| 技術 | プログラムAPI | MCP／ツール連携 | エージェント検証 |
+| --- | --- | --- | --- |
+| PixiJS v8 + TypeScript | 公開APIが明快・コード主体 | 固有のEditor MCPは前提にしない。Playwright MCP＋GitHub API | ブラウザ操作／Canvasスクリーンショット／画質比較 |
+| Phaser 3/4 | シーン・入力・ゲームオブジェクトAPI | Phaser Editor v5ベータにMCP連携、Phaser Game Agent MCPもあり（別サービス・クレジット制） | Playwright MCPでブラウザ確認。Editor MCPでシーン変更 |
+| Godot 4.x | GDScript／シーン／CLI／headless | コミュニティ製MCP複数（品質・保守は個別検証） | headless検証・ゲーム撮影・エクスポート |
+| Unity 6 | C#／Editor API／batchmode | **公式Unity MCP beta**（Cloud／AIトライアルまたは契約等、要件あり）およびOSSのUnity-MCP | Editor scene/console確認・CLI build・実機検証 |
+
+参照:  
+- PixiJS: https://pixijs.com/8.x/guides/components/application  
+- Microsoft Playwright MCP: https://github.com/microsoft/playwright-mcp  
+- Phaser Editor v5: https://phaser.io/news/2026/02/phaser-editor-v5-beta  
+- Phaser Game Agent: https://phaser.io/agent/mcp  
+- Unity公式MCP: https://unity.com/blog/unity-ai-mcp-how-to-get-started  
+- Godot CLI: https://docs.godotengine.org/en/stable/tutorials/editor/command_line_tutorial.html  
+
+### 先に行う小規模な適性テスト
+
+1. 新規フォルダに**戦闘画面の10〜12マス程度の小さな可動版**を独立実装し、元P05.4・街HTMLを変更しない。
+2. AIエージェントがコードを変更し、CLIからローカル起動し、Playwright MCPで移動・攻撃・ピンチ操作とスクリーンショット撮影を自動化できるか確認。
+3. 参考画像との画質差、特に人物・地形・グリッド・HUDを視覚比較。画質が不足する場合、単なるエンジン乗り換えではなく、アート素材を別レイヤーで制作する。
+4. 追加のエディター内自動操作が必要な場合にだけ、Phaser Editor v5・Godot・Unity MCPの実機PoCを追加する。
+
+**重要:** このChatGPTのGitHub連携が存在することと、ローカルPCのEditor MCPに接続できることは別。エディターを操作するためには対応するMCPクライアントへの接続設定が必要。
