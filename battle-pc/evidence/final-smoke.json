@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "1280px roster text fit",
+    "escort unique occupancy",
+    "reset during enemy phase invalidates stale callbacks",
+    "1900x900 final screen"
+  ],
+  "errors": []
+}

@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "approval_note": "New generated images are implementation candidates, not user-approved identity masters. Existing repository Lilia remains the reference.",
+  "projection": {
+    "canvas": [
+      1824,
+      864
+    ],
+    "origin": [
+      1008,
+      145
+    ],
+    "axis_x": [
+      78,
+      35
+    ],
+    "axis_y": [
+      -88,
+      43
+    ],
+    "height_step": 14
+  },
+  "entries": [
+    {
+      "asset_id": "garden-v1",
+      "purpose": "Terrain-only fantasy battlefield",
+      "reference_version": "User attached reference 0C0F28B7-2C38-4204-884E-5677C0F65038(1).png",
+      "prompt": "Premium Japanese fantasy tactical RPG background only, landscape 19:9. Match reference sunlit limestone ruins, abundant white yellow pink flowers, clear turquoise stream, alpine castle. No characters, HUD, text, HP, grid or markers. Large grassy limestone terraces in fixed shallow isometric 2:1 projection. Stream runs upper left to lower right; broad stone bridge links lower-left to upper-right terrace. Detailed painterly 2.5D environment. Central 75% open playable ground; distant landscape top 15%; flowers frame foreground.",
+      "created_date": "2026-10-18",
+      "generator": "built-in image_gen",
+      "resolution": [
+        1821,
+        864
+      ],
+      "alpha": false,
+      "file": "assets/bridge-garden.png",
+      "status": "candidate-unreviewed",
+      "sha256": "f0e76ef11a17ea827ad9a45a47ebc0d7068207f35fb1421dc3f05470fc0c168a"
+    },
+    {
+      "asset_id": "cast-v1",
+      "purpose": "Independent character sprites, 4x2 atlas",
+      "reference_version": "assets/lilia.png extracted unchanged from P05.4",
+      "prompt": "Transparent PNG 4 columns x 2 rows. Preserve reference Lilia identity: silver-lavender hair, pale blue eyes, silver breastplate, navy-white skirt, blue cape, black thigh-high boots, sword. Other cells: blonde Celes with blue shield and silver armor; green-haired Fiona with longbow and sage tunic; purple-haired Mireille with navy witch hat and crystal staff; black/burgundy sword soldier; brown hooded archer; black/red heavy knight with lance; rose/ivory female emissary. Cohesive detailed Japanese fantasy tactical sprites, full body, no scenery, no text, transparent alpha.",
+      "created_date": "2026-10-18",
+      "generator": "built-in image_gen",
+      "resolution": [
+        1536,
+        1024
+      ],
+      "alpha": true,
+      "file": "assets/units-atlas.png",
+      "status": "candidate-unreviewed",
+      "sha256": "e93c9f33bc8cdb3876ba45b29dcb350402aac4e7653fed10d31ded66860a5234"
+    },
+    {
+      "asset_id": "ornaments-v1",
+      "purpose": "UI ornaments and attack effects",
+      "reference_version": "Silver floral knight world palette",
+      "prompt": "Transparent PNG game UI/VFX atlas: navy horizontal title plate with antique gold silver floral filigree, empty text-free center; silver-white five-petaled flower crest with gold leaves; ivory-cyan sword slash with silver flower petals; blue-gold impact ring with stars and petals. Four separated objects, high quality fantasy game art, no text, no characters, transparent alpha.",
+      "created_date": "2026-10-18",
+      "generator": "built-in image_gen",
+      "resolution": [
+        1536,
+        1024
+      ],
+      "alpha": true,
+      "file": "assets/ornaments-atlas.png",
+      "status": "candidate-unreviewed",
+      "sha256": "daaa0a37029612891d14a1a581d9e88c10e3dd46337b3a5400a9ed550f2b3d1a"
+    },
+    {
+      "asset_id": "legacy-grass",
+      "purpose": "P05.4 extracted texture; bridge/wall reused in raised terrace",
+      "reference_version": "../index.html at 495d9d6",
+      "prompt": "",
+      "created_date": "2026-10-18",
+      "generator": "P05.4 repository extraction",
+      "resolution": [
+        320,
+        320
+      ],
+      "alpha": false,
+      "file": "assets/grass.jpg",
+      "status": "existing-repository-baseline",
+      "sha256": "8d2945e60d0c167d210fa98ca4cac3a4b095e75d384a1ced604d760c505edaa9"
+    },
+    {
+      "asset_id": "legacy-water",
+      "purpose": "P05.4 extracted texture; bridge/wall reused in raised terrace",
+      "reference_version": "../index.html at 495d9d6",
+      "prompt": "",
+      "created_date": "2026-10-18",
+      "generator": "P05.4 repository extraction",
+      "resolution": [
+        320,
+        320
+      ],
+      "alpha": false,
+      "file": "assets/water.jpg",
+      "status": "existing-repository-baseline",
+      "sha256": "26c4db51fbe983bd003615e5361060a0a7ae61442d6065d54611da466a8da252"
+    },
+    {
+      "asset_id": "legacy-bridge",
+      "purpose": "P05.4 extracted texture; bridge/wall reused in raised terrace",
+      "reference_version": "../index.html at 495d9d6",
+      "prompt": "",
+      "created_date": "2026-10-18",
+      "generator": "P05.4 repository extraction",
+      "resolution": [
+        320,
+        320
+      ],
+      "alpha": false,
+      "file": "assets/bridge.jpg",
+      "status": "existing-repository-baseline",
+      "sha256": "62cec7201e36c6f1b817ab06b936ee7255f11fb6ae29723b13392b12c97162ad"
+    },
+    {
+      "asset_id": "legacy-wall",
+      "purpose": "P05.4 extracted texture; bridge/wall reused in raised terrace",
+      "reference_version": "../index.html at 495d9d6",
+      "prompt": "",
+      "created_date": "2026-10-18",
+      "generator": "P05.4 repository extraction",
+      "resolution": [
+        320,
+        320
+      ],
+      "alpha": false,
+      "file": "assets/wall.jpg",
+      "status": "existing-repository-baseline",
+      "sha256": "bbed80248e0e5cf7e17e57ad5130eefbc21b72b6e5bdc08d0003b543b5481afb"
+    },
+    {
+      "asset_id": "legacy-lilia",
+      "purpose": "Identity reference retained byte-for-byte",
+      "reference_version": "../index.html at 495d9d6",
+      "prompt": "",
+      "created_date": "2026-10-18",
+      "generator": "P05.4 repository extraction",
+      "resolution": [
+        102,
+        132
+      ],
+      "alpha": false,
+      "file": "assets/lilia.png",
+      "status": "existing-repository-baseline",
+      "sha256": "54437ebfd838f2ca3416bee884b5e00d65b581011960e3587c08711d68d0ade6"
+    },
+    {
+      "asset_id": "unit-lilia",
+      "file": "assets/unit-lilia.png",
+      "parent": "cast-v1",
+      "operation": "lossless atlas cell extraction",
+      "crop": [
+        0,
+        0,
+        384,
+        512
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "display": {
+        "height": 128,
+        "anchor": [
+          0.5,
+          1
+        ],
+        "foot_offset_y": 4
+      },
+      "portrait": "assets/portrait-lilia.png",
+      "portrait_crop_within_cell": [
+        70,
+        0,
+        240,
+        240
+      ],
+      "animation": "same-identity sprite translated along BFS path plus subtle bob; no independent regenerated animation frames"
+    },
+    {
+      "asset_id": "unit-celes",
+      "file": "assets/unit-celes.png",
+      "parent": "cast-v1",
+      "operation": "lossless atlas cell extraction",
+      "crop": [
+        384,
+        0,
+        384,
+        512
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "display": {
+        "height": 128,
+        "anchor": [
+          0.5,
+          1
+        ],
+        "foot_offset_y": 4
+      },
+      "portrait": "assets/portrait-celes.png",
+      "portrait_crop_within_cell": [
+        70,
+        0,
+        240,
+        240
+      ],
+      "animation": "same-identity sprite translated along BFS path plus subtle bob; no independent regenerated animation frames"
+    },
+    {
+      "asset_id": "unit-fiona",
+      "file": "assets/unit-fiona.png",
+      "parent": "cast-v1",
+      "operation": "lossless atlas cell extraction",
+      "crop": [
+        768,
+        0,
+        384,
+        512
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "display": {
+        "height": 128,
+        "anchor": [
+          0.5,
+          1
+        ],
+        "foot_offset_y": 4
+      },
+      "portrait": "assets/portrait-fiona.png",
+      "portrait_crop_within_cell": [
+        70,
+        0,
+        240,
+        240
+      ],
+      "animation": "same-identity sprite translated along BFS path plus subtle bob; no independent regenerated animation frames"
+    },
+    {
+      "asset_id": "unit-mireille",
+      "file": "assets/unit-mireille.png",
+      "parent": "cast-v1",
+      "operation": "lossless atlas cell extraction",
+      "crop": [
+        1152,
+        0,
+        384,
+        512
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "display": {
+        "height": 128,
+        "anchor": [
+          0.5,
+          1
+        ],
+        "foot_offset_y": 4
+      },
+      "portrait": "assets/portrait-mireille.png",
+      "portrait_crop_within_cell": [
+        70,
+        0,
+        240,
+        240
+      ],
+      "animation": "same-identity sprite translated along BFS path plus subtle bob; no independent regenerated animation frames"
+    },
+    {
+      "asset_id": "unit-soldier",
+      "file": "assets/unit-soldier.png",
+      "parent": "cast-v1",
+      "operation": "lossless atlas cell extraction",
+      "crop": [
+        0,
+        512,
+        384,
+        512
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "display": {
+        "height": 128,
+        "anchor": [
+          0.5,
+          1
+        ],
+        "foot_offset_y": 4
+      },
+      "portrait": "assets/portrait-soldier.png",
+      "portrait_crop_within_cell": [
+        70,
+        0,
+        240,
+        240
+      ],
+      "animation": "same-identity sprite translated along BFS path plus subtle bob; no independent regenerated animation frames"
+    },
+    {
+      "asset_id": "unit-archer",
+      "file": "assets/unit-archer.png",
+      "parent": "cast-v1",
+      "operation": "lossless atlas cell extraction",
+      "crop": [
+        384,
+        512,
+        384,
+        512
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "display": {
+        "height": 128,
+        "anchor": [
+          0.5,
+          1
+        ],
+        "foot_offset_y": 4
+      },
+      "portrait": "assets/portrait-archer.png",
+      "portrait_crop_within_cell": [
+        70,
+        0,
+        240,
+        240
+      ],
+      "animation": "same-identity sprite translated along BFS path plus subtle bob; no independent regenerated animation frames"
+    },
+    {
+      "asset_id": "unit-knight",
+      "file": "assets/unit-knight.png",
+      "parent": "cast-v1",
+      "operation": "lossless atlas cell extraction",
+      "crop": [
+        768,
+        512,
+        384,
+        512
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "display": {
+        "height": 128,
+        "anchor": [
+          0.5,
+          1
+        ],
+        "foot_offset_y": 4
+      },
+      "portrait": "assets/portrait-knight.png",
+      "portrait_crop_within_cell": [
+        70,
+        0,
+        240,
+        240
+      ],
+      "animation": "same-identity sprite translated along BFS path plus subtle bob; no independent regenerated animation frames"
+    },
+    {
+      "asset_id": "unit-emissary",
+      "file": "assets/unit-emissary.png",
+      "parent": "cast-v1",
+      "operation": "lossless atlas cell extraction",
+      "crop": [
+        1152,
+        512,
+        384,
+        512
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "display": {
+        "height": 119,
+        "anchor": [
+          0.5,
+          1
+        ],
+        "foot_offset_y": 4
+      },
+      "portrait": "assets/portrait-emissary.png",
+      "portrait_crop_within_cell": [
+        70,
+        0,
+        240,
+        240
+      ],
+      "animation": "same-identity sprite translated along BFS path plus subtle bob; no independent regenerated animation frames"
+    },
+    {
+      "asset_id": "ui-frame",
+      "file": "assets/ui-frame.png",
+      "parent": "ornaments-v1",
+      "operation": "lossless atlas crop",
+      "crop_xyxy": [
+        20,
+        110,
+        850,
+        390
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed"
+    },
+    {
+      "asset_id": "ui-crest",
+      "file": "assets/ui-crest.png",
+      "parent": "ornaments-v1",
+      "operation": "lossless atlas crop",
+      "crop_xyxy": [
+        880,
+        30,
+        1480,
+        440
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed"
+    },
+    {
+      "asset_id": "fx-slash",
+      "file": "assets/fx-slash.png",
+      "parent": "ornaments-v1",
+      "operation": "lossless atlas crop",
+      "crop_xyxy": [
+        0,
+        440,
+        850,
+        1024
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed"
+    },
+    {
+      "asset_id": "fx-impact",
+      "file": "assets/fx-impact.png",
+      "parent": "ornaments-v1",
+      "operation": "lossless atlas crop",
+      "crop_xyxy": [
+        850,
+        450,
+        1536,
+        1024
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed"
+    }
+  ]
+}

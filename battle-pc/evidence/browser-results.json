@@ -1,0 +1,133 @@
+{
+  "passed": true,
+  "loadMs": 758,
+  "fps": 9,
+  "actions": 16,
+  "winRound": 5,
+  "remainingHP": [
+    {
+      "name": "リリア",
+      "hp": 23,
+      "exp": 90
+    },
+    {
+      "name": "セレス",
+      "hp": 36,
+      "exp": 0
+    },
+    {
+      "name": "フィオナ",
+      "hp": 22,
+      "exp": 30
+    },
+    {
+      "name": "ミレイユ",
+      "hp": 0,
+      "exp": 50
+    },
+    {
+      "name": "敵剣士",
+      "hp": 0,
+      "exp": 0
+    },
+    {
+      "name": "敵弓兵",
+      "hp": 0,
+      "exp": 0
+    },
+    {
+      "name": "敵騎士",
+      "hp": 0,
+      "exp": 0
+    }
+  ],
+  "viewports": [
+    "1900x900",
+    "1536x864",
+    "1280x720",
+    "2560x1080"
+  ],
+  "errors": [],
+  "turns": [
+    {
+      "round": 1,
+      "actor": "ミレイユ",
+      "hp": 22
+    },
+    {
+      "round": 1,
+      "actor": "セレス",
+      "hp": 36
+    },
+    {
+      "round": 2,
+      "actor": "フィオナ",
+      "hp": 22
+    },
+    {
+      "round": 2,
+      "actor": "リリア",
+      "hp": 23
+    },
+    {
+      "round": 2,
+      "actor": "ミレイユ",
+      "hp": 22
+    },
+    {
+      "round": 2,
+      "actor": "セレス",
+      "hp": 36
+    },
+    {
+      "round": 3,
+      "actor": "フィオナ",
+      "hp": 22
+    },
+    {
+      "round": 3,
+      "actor": "リリア",
+      "hp": 23
+    },
+    {
+      "round": 3,
+      "actor": "ミレイユ",
+      "hp": 11
+    },
+    {
+      "round": 3,
+      "actor": "セレス",
+      "hp": 36
+    },
+    {
+      "round": 4,
+      "actor": "フィオナ",
+      "hp": 22
+    },
+    {
+      "round": 4,
+      "actor": "リリア",
+      "hp": 23
+    },
+    {
+      "round": 4,
+      "actor": "ミレイユ",
+      "hp": 4
+    },
+    {
+      "round": 4,
+      "actor": "セレス",
+      "hp": 36
+    },
+    {
+      "round": 5,
+      "actor": "フィオナ",
+      "hp": 22
+    },
+    {
+      "round": 5,
+      "actor": "リリア",
+      "hp": 23
+    }
+  ]
+}
