@@ -19,7 +19,7 @@ npm run build
 npx vite preview --host 127.0.0.1 --port 4174
 ```
 
-製品ビルドは `dist/` です。相対URLでビルドするため、サブディレクトリにも配置できます。本PRは既存GitHub Pagesの設定を変更せず、公開・マージも行いません。街へのリンクは、既存townと同じサイトに配置した際に有効になります。
+製品ビルドは `dist/` です。相対URLでビルドするため、サブディレクトリにも配置できます。公開URLは **https://sugikazu777.github.io/ginka-senki/battle-pc/** です。`main` 更新時にGitHub Actionsがテスト・ビルド・Pages公開を実行します。既存のトップページと街版も同じサイトに保持するため、勝利画面の「街へ」リンクから移動できます。
 
 ## 操作
 

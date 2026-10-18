@@ -1,0 +1,56 @@
+name: Publish Ginka Senki
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: battle-pc/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+        working-directory: battle-pc
+      - name: Verify tactical rules
+        run: npm test
+        working-directory: battle-pc
+      - name: Build PC battle
+        run: npm run build
+        working-directory: battle-pc
+      - name: Assemble site, preserving existing battle and town
+        run: |
+          mkdir -p _site/battle-pc _site/town
+          cp index.html _site/index.html
+          cp -R town/. _site/town/
+          cp -R battle-pc/dist/. _site/battle-pc/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
