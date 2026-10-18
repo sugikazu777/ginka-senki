@@ -1,5 +1,8 @@
 # 銀花戦記 — PC戦闘版「風紡ぐ橋」
 
+> **設計判断の正本**：[../docs/DESIGN_DECISIONS.md](../docs/DESIGN_DECISIONS.md)  
+> このREADMEは**現行実装の操作方法・構成・起動手順**を説明します。記載されているキャラクター配置、クリック手順、実装範囲、素材はユーザーの最終承認を意味しません。判断と未決論点は正本、試験結果は [VALIDATION.md](VALIDATION.md)、素材の承認状態は [assets/manifest.json](assets/manifest.json) を優先してください。
+>
 P05.4を基にした独立したPC向けプレイアブル版です。既存の `../index.html` と `../town/index.html` は変更していません。基準は今回の依頼に従い **19:9（1900×900）**。16:9・ウルトラワイドにも適応します。
 
 ## 起動
