@@ -16,6 +16,7 @@ const growth:Record<string,{hp:number;atk:number|number[];def:number|number[];sp
 export class Battle {
  readonly width=8;readonly height=10;
  tiles:Tile[]=[];units:Unit[]=[];phase:Side='ally';round=1;result:''|'win'|'lose'='';log:string[]=[];objective:Pos;
+ private moveUndo:{unit:Unit;from:Pos;wasMoved:boolean}|undefined;
  constructor(public mission:Mission='wipe'){
  this.objective=mission==='capture'?{x:4,y:1}:{x:4,y:3};
  for(let y=0;y<10;y++)for(let x=0;x<8;x++){
@@ -30,11 +31,14 @@ export class Battle {
  occupied(p:Pos){return this.units.find(u=>u.hp>0&&u.x===p.x&&u.y===p.y)}
  living(side:Side){return this.units.filter(u=>u.hp>0&&u.side===side)}
  get active(){return this.living('ally').filter(u=>!u.done).sort((a,b)=>b.speed-a.speed||a.id-b.id)[0]}
+ get undoableMoveUnit(){return this.moveUndo?.unit}
+ canUndoMove(a:Unit){const move=this.moveUndo;return !!move&&move.unit===a&&this.canAct(a)&&a.moved&&!this.occupied(move.from)}
+ undoMove(a:Unit){if(!this.canUndoMove(a))return false;const move=this.moveUndo!;a.x=move.from.x;a.y=move.from.y;a.moved=move.wasMoved;this.moveUndo=undefined;return true}
  say(s:string){this.log.push(s);if(this.log.length>30)this.log.shift()}
  moveRange(a:Unit){
  const q=[{x:a.x,y:a.y,c:0}],out=new Map([[key(a),0]]),paths=new Map<string,string>();
- for(let i=0;i<q.length;i++){const {x,y,c}=q[i];for(const [dx,dy] of dirs){const p={x:x+dx,y:y+dy};
- if(p.x<0||p.y<0||p.x>=8||p.y>=10||!this.tile(p).walk||this.occupied(p)||Math.abs(this.tile(p).h-this.tile({x,y}).h)>1||c+1>a.move)continue;
+ for(let i=0;i<q.length;i++){const {x,y,c}=q[i];for(const [dx,dy] of dirs){const p={x:x+dx,y:y+dy},reservation=this.moveUndo&&this.moveUndo.unit!==a&&key(this.moveUndo.from)===key(p);
+ if(p.x<0||p.y<0||p.x>=8||p.y>=10||!this.tile(p).walk||this.occupied(p)||reservation||Math.abs(this.tile(p).h-this.tile({x,y}).h)>1||c+1>a.move)continue;
  if((out.get(key(p))??99)<=c+1)continue;out.set(key(p),c+1);paths.set(key(p),key({x,y}));q.push({...p,c:c+1});}}
  return {out,paths};
  }
@@ -42,12 +46,12 @@ export class Battle {
  targets(a:Unit,pos:Pos=a){return new Set(this.tiles.filter(t=>t.walk&&dist(pos,t)>=a.rmin&&dist(pos,t)<=a.rmax).map(key))}
  threats(a:Unit){const result=new Set<string>();for(const k of this.moveRange(a).out.keys()){const [x,y]=k.split(',').map(Number);for(const t of this.targets(a,{x,y}))result.add(t)}return result}
  canAct(a:Unit){return !this.result&&this.phase==='ally'&&this.active===a&&a.hp>0&&!a.done}
- move(a:Unit,to:Pos){if(!this.canAct(a)||a.moved||this.occupied(to)||!this.moveRange(a).out.has(key(to)))return false;a.x=to.x;a.y=to.y;a.moved=true;this.say(`${a.name}が移動しました。`);this.check();return true}
+ move(a:Unit,to:Pos){if(!this.canAct(a)||a.moved||this.occupied(to)||!this.moveRange(a).out.has(key(to)))return false;this.moveUndo={unit:a,from:{x:a.x,y:a.y},wasMoved:a.moved};a.x=to.x;a.y=to.y;a.moved=true;this.say(`${a.name}が移動しました。`);this.check();return true}
  earnExp(a:Unit,amount:number){if(a.side!=='ally'||a.hp<=0)return;a.exp+=amount;while(a.exp>=100){a.exp-=100;a.level++;const g=growth[a.name]||{hp:2,atk:1,def:0,speed:0};const step=(v:number|number[])=>Array.isArray(v)?v[(a.level-2)%v.length]:v;const dh=step(g.hp);a.hp+=dh;a.max+=dh;a.atk+=step(g.atk);a.def+=step(g.def);a.speed+=step(g.speed);this.say(`${a.name} Lv.${a.level} に成長！`)}}
  damage(a:Unit,b:Unit){return Math.max(1,a.atk-b.def)}
  fight(a:Unit,b:Unit){const damage=this.damage(a,b);b.hp=Math.max(0,b.hp-damage);this.say(`${a.name} → ${b.name}  ${damage}ダメージ${b.hp===0?'・撃破':''}`);if(a.side==='ally'&&b.side==='enemy')this.earnExp(a,b.hp===0?30:10);this.check();return damage}
- attack(a:Unit,b:Unit){if(!this.canAct(a)||b.side!=='enemy'||b.hp<=0||!this.targets(a).has(key(b)))return false;this.fight(a,b);a.done=true;return true}
- wait(a:Unit){if(!this.canAct(a))return false;a.done=true;this.say(`${a.name}は待機。`);return true}
+ attack(a:Unit,b:Unit){if(!this.canAct(a)||b.side!=='enemy'||b.hp<=0||!this.targets(a).has(key(b)))return false;this.fight(a,b);a.done=true;this.moveUndo=undefined;return true}
+ wait(a:Unit){if(!this.canAct(a))return false;a.done=true;this.moveUndo=undefined;this.say(`${a.name}は待機。`);return true}
  check(){if(this.result)return;if(this.units[0].hp<=0){this.result='lose';return}if(this.mission==='escort'){const g=this.living('guest')[0];if(!g){this.result='lose';return}if(key(g)===key(this.objective))this.result='win'}if(this.mission==='capture'&&key(this.units[0])===key(this.objective))this.result='win';if(!this.living('enemy').length)this.result='win'}
  enemyAction(e:Unit){
  const allies=this.units.filter(u=>u.hp>0&&(u.side==='ally'||u.side==='guest'));if(!allies.length)return;
@@ -63,7 +67,7 @@ export class Battle {
  for(const pos of reachable){const distance=Math.min(...allies.map(a=>{const d=dist(pos,a);return d<e.rmin?e.rmin-d:Math.max(0,d-e.rmax)}));const danger=allies.reduce((n,a)=>n+(dist(pos,a)>=a.rmin&&dist(pos,a)<=a.rmax?1:0),0);const score=-distance*20-danger*2-dist(pos,e)*.03;if(!choice||score>choice.score)choice={pos,score}}
  if(choice){e.x=choice.pos.x;e.y=choice.pos.y}
  }
- beginEnemy(){if(this.result||this.active)return false;this.phase='enemy';return true}
+ beginEnemy(){if(this.result||this.active)return false;this.moveUndo=undefined;this.phase='enemy';return true}
  finishEnemy(){if(this.result)return;if(this.mission==='escort'){const guest=this.living('guest')[0];if(guest){const candidates=[...this.moveRange(guest).out.keys()].map(k=>{const [x,y]=k.split(',').map(Number);return{x,y}}).sort((a,b)=>dist(a,this.objective)-dist(b,this.objective));if(candidates[0]&&dist(candidates[0],this.objective)<dist(guest,this.objective)){guest.x=candidates[0].x;guest.y=candidates[0].y}this.check()}}
  if(this.result)return;this.round++;this.phase='ally';this.units.forEach(u=>{u.done=false;u.moved=false});}
 }
