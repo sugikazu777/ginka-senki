@@ -84,7 +84,7 @@
 | `10-cliff-7-3-zoom.png` / `11-bank-5-3-zoom-pan.png` | ズーム・パン後の再確認 |
 | `12-normal-play-resumed.png` | 診断終了後、通常操作へ復帰 |
 | `13-bank-height-boundary.png` / `14-bridge-height-boundary.png` | H0/H1の境界中点に照準対象がない状態 |
-| `existing-suite/` | 既存G02ブラウザテストの今回実行分。従来の証拠画像は上書きしていない |
+| `existing-suite/` | 既存G02テストの今回実行画像はローカルに保存。重複画像のためPRには含めず、従来の証拠画像は保持 |
 
 ## テスト結果
 
