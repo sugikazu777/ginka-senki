@@ -1,0 +1,300 @@
+{
+  "viewport": "1920x855",
+  "before": {
+    "active": 2,
+    "selected": 2
+  },
+  "afterCard": {
+    "active": 2,
+    "selected": 2
+  },
+  "afterExit": {
+    "active": 2,
+    "selected": 2
+  },
+  "statePreserved": true,
+  "anchorToggle": "immediate clear and redraw; zero opacity/all-overlay hidden also clear",
+  "hpHide": true,
+  "terrain": [
+    {
+      "file": "06-bank-5-3.png",
+      "coordinate": [
+        5,
+        3
+      ],
+      "height": 0,
+      "terrain": "grass",
+      "walk": true,
+      "viewport": "1920x855",
+      "zoom": 1,
+      "pan": {
+        "x": 0,
+        "y": 0
+      },
+      "grid": true,
+      "labels": true,
+      "anchors": true,
+      "opacity": 62
+    },
+    {
+      "file": "07-cliff-7-3.png",
+      "coordinate": [
+        7,
+        3
+      ],
+      "height": 0,
+      "terrain": "grass",
+      "walk": true,
+      "viewport": "1920x855",
+      "zoom": 1,
+      "pan": {
+        "x": 0,
+        "y": 0
+      },
+      "grid": true,
+      "labels": true,
+      "anchors": true,
+      "opacity": 62
+    },
+    {
+      "file": "08-bridge-edge-h1-4-2.png",
+      "coordinate": [
+        4,
+        2
+      ],
+      "height": 1,
+      "terrain": "grass",
+      "walk": true,
+      "viewport": "1920x855",
+      "zoom": 1,
+      "pan": {
+        "x": 0,
+        "y": 0
+      },
+      "grid": true,
+      "labels": true,
+      "anchors": true,
+      "opacity": 62
+    },
+    {
+      "file": "09-bridge-edge-h0-4-3.png",
+      "coordinate": [
+        4,
+        3
+      ],
+      "height": 0,
+      "terrain": "grass",
+      "walk": true,
+      "viewport": "1920x855",
+      "zoom": 1,
+      "pan": {
+        "x": 0,
+        "y": 0
+      },
+      "grid": true,
+      "labels": true,
+      "anchors": true,
+      "opacity": 62
+    },
+    {
+      "file": "10-cliff-7-3-zoom.png",
+      "coordinate": [
+        7,
+        3
+      ],
+      "viewport": "1920x855",
+      "zoom": 1.12,
+      "pan": {
+        "x": 0,
+        "y": 0
+      },
+      "grid": true,
+      "labels": true,
+      "anchors": true,
+      "opacity": 62
+    },
+    {
+      "file": "11-bank-5-3-zoom-pan.png",
+      "coordinate": [
+        5,
+        3
+      ],
+      "viewport": "1920x855",
+      "zoom": 1.12,
+      "pan": {
+        "x": 50,
+        "y": 40
+      },
+      "grid": true,
+      "labels": true,
+      "anchors": true,
+      "opacity": 62
+    }
+  ],
+  "boundaries": [
+    {
+      "between": [
+        [
+          5,
+          3
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "observed": [
+        {
+          "expected": [
+            5,
+            3
+          ],
+          "info": "(5, 3) / H0 / 草地"
+        },
+        {
+          "expected": [
+            6,
+            3
+          ],
+          "info": "(6, 3) / H0 / 草地"
+        }
+      ],
+      "midpoint": {
+        "x": 5,
+        "y": 3,
+        "height": 0
+      },
+      "midpointInfo": "照準（論理マス / 0始まり）"
+    },
+    {
+      "between": [
+        [
+          5,
+          3
+        ],
+        [
+          5,
+          2
+        ]
+      ],
+      "observed": [
+        {
+          "expected": [
+            5,
+            3
+          ],
+          "info": "(5, 3) / H0 / 草地"
+        },
+        {
+          "expected": [
+            5,
+            2
+          ],
+          "info": "(5, 2) / H1 / 草地"
+        }
+      ],
+      "midpoint": null,
+      "midpointInfo": "クリックしたマス (5, 2) を選択中。照準を合わせると詳細が表示されます。"
+    },
+    {
+      "between": [
+        [
+          7,
+          3
+        ],
+        [
+          6,
+          3
+        ]
+      ],
+      "observed": [
+        {
+          "expected": [
+            7,
+            3
+          ],
+          "info": "(7, 3) / H0 / 草地"
+        },
+        {
+          "expected": [
+            6,
+            3
+          ],
+          "info": "(6, 3) / H0 / 草地"
+        }
+      ],
+      "midpoint": {
+        "x": 6,
+        "y": 3,
+        "height": 0
+      },
+      "midpointInfo": "照準（論理マス / 0始まり）"
+    },
+    {
+      "between": [
+        [
+          7,
+          3
+        ],
+        [
+          7,
+          2
+        ]
+      ],
+      "observed": [
+        {
+          "expected": [
+            7,
+            3
+          ],
+          "info": "(7, 3) / H0 / 草地"
+        },
+        {
+          "expected": [
+            7,
+            2
+          ],
+          "info": "(7, 2) / H0 / 草地"
+        }
+      ],
+      "midpoint": {
+        "x": 7,
+        "y": 3,
+        "height": 0
+      },
+      "midpointInfo": "照準（論理マス / 0始まり）"
+    },
+    {
+      "between": [
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ]
+      ],
+      "observed": [
+        {
+          "expected": [
+            4,
+            2
+          ],
+          "info": "(4, 2) / H1 / 草地"
+        },
+        {
+          "expected": [
+            4,
+            3
+          ],
+          "info": "(4, 3) / H0 / 草地"
+        }
+      ],
+      "midpoint": null,
+      "midpointInfo": "クリックしたマス (4, 3) を選択中。照準を合わせると詳細が表示されます。"
+    }
+  ],
+  "pageErrors": [],
+  "evidence": "C:\\Projects\\ginka-senki\\battle-pc\\evidence\\g02-followup-20261019"
+}

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
-const evidence=path.resolve(here,'../evidence/g02-20261019');
+const evidence=process.env.G02_EVIDENCE_DIR?path.resolve(process.env.G02_EVIDENCE_DIR):path.resolve(here,'../evidence/g02-20261019');
 fs.mkdirSync(evidence,{recursive:true});
 const browser=await chromium.launch({headless:true});
 const page=await browser.newPage({viewport:{width:1920,height:855},deviceScaleFactor:1});
