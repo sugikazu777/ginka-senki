@@ -58,3 +58,47 @@ Windowsローカル / Node 24.19 / Chromium 156 / PixiJS WebGL / Playwright。�
 | 低い画面サイズ | 1280×720の味方名の見切れを行高調整で解消 | スマホ縦は対象外 |
 
 修正前の攻撃誤選択は `evidence/iterations/attack-overlap-before-fix.png` に保存。最終通し試験では解消しています。
+
+## リリア近接エフェクト — 2026-10-18
+
+| 確認 | 結果 |
+| --- | --- |
+| `npm test` | 9 / 9 PASS |
+| `npm run build` | TypeScript型チェック・Vite製品ビルド PASS |
+| 外部Chrome・1920×855 | フィオナ待機 → リリア移動・剣士攻撃。敵剣士HP 22→14、リリアEXP 0→10、次の行動者へ進行 |
+| ブラウザ操作スモーク・1920×855 | 実際のボタン・マウス入力でリリアが3回攻撃し、敵剣士HP 0、リリアEXP 50。ページエラーなし |
+| 演出 | 踏み込み、斬撃、着弾火花、ダメージ値、のけぞり、撃破粒子、敵スプライト消失を確認 |
+
+ブラウザ操作は移動・攻撃・待機ボタンと盤面クリックで行い、検証用snapshotは読み取りにだけ使用しています。画面状態の直接書き換えはしていません。
+
+- [初期画面](evidence/lilia-melee-review-v2/01-initial.png)
+- [リリア移動後](evidence/lilia-melee-review-v2/02-lilia-moved.png)
+- [攻撃予測](evidence/lilia-melee-review-v2/03-attack-preview.png)
+- [白銀の斬撃・着弾](evidence/lilia-melee-review-v2/04-slash-impact-frame.png)
+- [攻撃後](evidence/lilia-melee-review-v2/05-attack-result.png)
+- [撃破粒子](evidence/lilia-melee-review-v5/02-defeat-particles.png)
+
+生成アセットのプロンプト、透過情報、解像度、SHA-256は `assets/manifest.json` に登録しています。すべて未承認候補として記録し、既存のキャラクター素材・汎用VFXは変更していません。
+
+## 操作UI・移動取消・リリア高精細化 — 2026-10-19
+
+| 確認 | 結果 |
+| --- | --- |
+| `npm test` | 11 / 11 PASS。移動取消で座標・行動状態だけが戻り、HP・EXP・敵状態・行動順が変化しないことを確認 |
+| `npm run build` | TypeScript型チェック・Vite製品ビルド PASS |
+| 外部Chrome・1920×855 | 行動順外の情報閲覧、移動・経路取消・再移動、攻撃予測、攻撃演出、手動パン後の再選択、作戦変更後の取消情報破棄を確認 |
+| 外部Chrome・1920×854 | リリアの高精細素材を標準倍率・拡大3回で確認。頭上ラベル、足元、HP位置に重なりなし |
+| 戦闘 | 敵剣士HP 22→14、リリアEXP 0→10、次の行動者へ切り替わることを確認 |
+
+操作の証拠画像：
+
+- [行動順外の人物を閲覧](evidence/ui-regression-20261019/02-out-of-turn-selection-1920x855.png)
+- [移動完了](evidence/ui-regression-20261019/04-after-move-1920x855.png)
+- [攻撃予測](evidence/ui-regression-20261019/05-attack-prediction-1920x855.png)
+- [移動取消後](evidence/ui-regression-20261019/06-after-undo-1920x855.png)
+- [攻撃演出中](evidence/ui-regression-20261019/08-attack-animation-1920x855.png)
+- [手動パン後の明示的再選択](evidence/ui-regression-20261019/12-explicit-reselection-reveals-1920x855.png)
+- [案内パネルの変更前](evidence/hud-design-20261019/00-baseline-hud-comparison.png) ／ [変更後](evidence/hud-design-20261019/30-after-hud-comparison.png)
+- [高精細化の同サイズ比較](evidence/visual-ui-20261019/05-lilia-before-candidate-comparison.png) ／ [拡大確認](evidence/visual-ui-20261019/06-lilia-same-size-closeup.png)
+
+リリアの戦場素材は384×512から1086×1448へ差し替え、画面上の表示高さ128、足元アンカー、HP表示位置は維持しています。差し替え前の素材と比較候補は `evidence/quality-candidate/` に保存しています。他の人物素材は変更していません。

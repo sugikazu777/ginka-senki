@@ -16,3 +16,20 @@ test('all three victory modes, leader and escort defeat',()=>{for(const m of ['w
 test('escort advances and phase reset clears moved/done',()=>{const b=new Battle('escort');const guest=b.living('guest')[0],before=dist(guest,b.objective);b.units.forEach(u=>{u.moved=true;u.done=true});b.beginEnemy();b.finishEnemy();assert.ok(dist(guest,b.objective)<before);assert.ok(b.units.every(u=>!u.moved&&!u.done))});
 
 test('every mission begins with distinct living unit cells',()=>{for(const mode of ['wipe','capture','escort'] as const){const b=new Battle(mode);assert.equal(new Set(b.units.map(key)).size,b.units.length)}});
+
+test('undoing movement restores only position and movement state before action commit',()=>{
+ const b=new Battle(),fiona=b.units[2],lilia=b.units[0],enemy=b.units[4];
+ assert.equal(b.wait(fiona),true);assert.equal(b.active,lilia);
+ const before={units:b.units.map(u=>({x:u.x,y:u.y,hp:u.hp,exp:u.exp,moved:u.moved,done:u.done})),active:b.active?.id,round:b.round,phase:b.phase};
+ assert.equal(b.move(lilia,{x:3,y:3}),true);assert.equal(b.undoableMoveUnit,lilia);assert.equal(b.canUndoMove(lilia),true);
+ assert.equal(b.targets(lilia).has(key(enemy)),true);assert.equal(b.damage(lilia,enemy),8);
+ assert.equal(b.undoMove(lilia),true);
+ assert.deepEqual({units:b.units.map(u=>({x:u.x,y:u.y,hp:u.hp,exp:u.exp,moved:u.moved,done:u.done})),active:b.active?.id,round:b.round,phase:b.phase},before);
+ assert.equal(enemy.hp,22);assert.equal(lilia.exp,0);assert.equal(b.undoableMoveUnit,undefined);
+ assert.equal(b.move(lilia,{x:3,y:3}),true);assert.equal(b.attack(lilia,enemy),true);assert.equal(b.canUndoMove(lilia),false);assert.equal(b.undoMove(lilia),false);
+ assert.deepEqual([lilia.x,lilia.y,lilia.moved,lilia.done,lilia.exp,enemy.hp,b.active?.id],[3,3,true,true,10,14,3]);
+});
+
+test('waiting commits a moved unit and discards its undo option',()=>{
+ const b=new Battle(),fiona=b.active;assert.equal(b.move(fiona,{x:2,y:7}),true);assert.equal(b.canUndoMove(fiona),true);assert.equal(b.wait(fiona),true);assert.equal(b.canUndoMove(fiona),false);assert.equal(b.undoMove(fiona),false);assert.deepEqual([fiona.x,fiona.y,fiona.moved,fiona.done,b.active?.id],[2,7,true,true,0]);
+});

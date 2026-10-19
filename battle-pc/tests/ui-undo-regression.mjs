@@ -1,0 +1,35 @@
+import {chromium} from '@playwright/test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const base=new URL('../evidence/ui-regression-20261019/',import.meta.url);
+const evidenceDir=fileURLToPath(base);
+fs.mkdirSync(evidenceDir,{recursive:true});
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1920,height:855},deviceScaleFactor:1});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto(process.env.BATTLE_URL||'http://127.0.0.1:4173/?debug=1');
+await page.waitForFunction(()=>window.battleDebug);
+const state=()=>page.evaluate(()=>window.battleDebug.snapshot());
+const shot=name=>page.screenshot({path:path.join(evidenceDir,name)});
+const idle=()=>page.waitForFunction(()=>{const s=window.battleDebug.snapshot();return !s.busy&&s.phase==='ally'});
+async function tile(x,y){const s=await state(),t=s.tiles.find(v=>v.x===x&&v.y===y);assert.ok(t,`tile ${x},${y}`);await page.mouse.click(t.screen.x,t.screen.y)}
+async function move(x,y){await page.locator('#move').click();await tile(x,y);await tile(x,y);await idle()}
+const ui=()=>page.evaluate(()=>({phase:document.querySelector('#phase').innerText,guide:document.querySelector('#stage-guide').innerText,selected:document.querySelector('#selected').innerText,undoHidden:document.querySelector('#undo-move').hidden,current:document.querySelector('.unit-card.current')?.innerText,undoLabel:document.querySelector('#undo-move').getAttribute('aria-label')}));
+await shot('01-initial-1920x855.png');
+await page.getByRole('button',{name:'セレスを選択'}).click();
+let s=await state(),u=await ui();assert.match(u.phase,/フィオナの行動/);assert.match(u.guide,/現在はフィオナの行動/);assert.match(u.current,/フィオナ/);await shot('02-out-of-turn-selection-1920x855.png');
+await page.getByRole('button',{name:'フィオナを選択'}).click();await page.locator('#wait').click();
+assert.match((await ui()).phase,/リリアの行動/);
+await page.getByRole('button',{name:'リリアを選択'}).click();
+await page.locator('#move').click();await tile(3,3);await shot('03-route-preview-1920x855.png');await tile(3,3);await idle();
+s=await state();u=await ui();assert.deepEqual([s.units[0].x,s.units[0].y,s.units[0].moved],[3,3,true]);assert.equal(u.undoHidden,false);assert.match(u.guide,/移動完了：赤い範囲の敵/);assert.match(u.undoLabel,/リリア/);await shot('04-after-move-1920x855.png');
+await page.locator('#attack').click();const enemy=(await state()).units[4];await page.mouse.click(enemy.screen.x,enemy.screen.y-30);u=await ui();assert.match(u.guide,/敵剣士へ8ダメージ予測/);assert.equal(u.undoHidden,false);await shot('05-attack-prediction-1920x855.png');
+await page.locator('#undo-move').click();s=await state();u=await ui();assert.deepEqual([s.units[0].x,s.units[0].y,s.units[0].moved,s.units[4].hp,s.units[0].exp],[3,6,false,22,0]);assert.equal(u.undoHidden,true);assert.match(u.guide,/移動先選択/);await shot('06-after-undo-1920x855.png');
+await move(3,5);s=await state();u=await ui();assert.deepEqual([s.units[0].x,s.units[0].y],[3,5]);assert.match(u.guide,/射程内に敵はいません/);assert.equal(u.undoHidden,false);await shot('07-moved-no-target-1920x855.png');
+await page.locator('#undo-move').click();await move(3,3);await page.locator('#attack').click();s=await state();const sword=s.units[4];await page.mouse.click(sword.screen.x,sword.screen.y-30);await page.mouse.click(sword.screen.x,sword.screen.y-30);await page.waitForTimeout(720);s=await state();u=await ui();assert.equal(s.busy,true);assert.deepEqual([s.units[4].hp,s.units[0].exp],[14,10]);assert.match(u.phase,/リリアの行動/);assert.match(u.guide,/リリアが攻撃中/);assert.match(u.current,/リリア/);assert.equal(u.undoHidden,true);await shot('08-attack-animation-1920x855.png');
+await idle();s=await state();u=await ui();assert.equal(s.busy,false);assert.match(u.phase,/ミレイユの行動/);assert.match(u.current,/ミレイユ/);assert.deepEqual([s.units[4].hp,s.units[0].exp,s.active],[14,10,3]);assert.equal(u.undoHidden,true);await shot('09-after-attack-1920x855.png');
+await page.reload();await page.waitForFunction(()=>window.battleDebug);await page.getByRole('button',{name:'フィオナを選択'}).click();await page.locator('#wait').click();await page.getByRole('button',{name:'リリアを選択'}).click();await move(3,3);assert.equal((await ui()).undoHidden,false);await page.locator('#mission').selectOption('capture');await page.waitForTimeout(100);u=await ui();s=await state();assert.equal(u.undoHidden,true);assert.equal(s.round,1);assert.equal(s.units[0].moved,false);await shot('10-mission-reset-1920x855.png');
+await page.getByRole('button',{name:'リリアを選択'}).click();const beforePan=(await state()).pan;await page.mouse.move(955,480);await page.mouse.down();await page.mouse.move(955,735,{steps:10});await page.mouse.up();let panState=await state();assert.ok(panState.pan.y>150);await shot('11-manual-pan-no-auto-return-1920x855.png');await page.getByRole('button',{name:'リリアを選択'}).click();panState=await state();assert.ok(Math.hypot(panState.pan.x-beforePan.x,panState.pan.y-beforePan.y)>100);const clear=await page.evaluate(()=>{const unit=window.battleDebug.snapshot().units[0].screen,scale=document.querySelector('canvas').clientHeight/864,rect={left:unit.x-50*scale,right:unit.x+50*scale,top:unit.y-132*scale,bottom:unit.y+31*scale};return !['.party','.right','footer'].some(sel=>{const o=document.querySelector(sel).getBoundingClientRect();return Math.max(0,Math.min(rect.right,o.right)-Math.max(rect.left,o.left))*Math.max(0,Math.min(rect.bottom,o.bottom)-Math.max(rect.top,o.top))>0})});assert.equal(clear,true);await shot('12-explicit-reselection-reveals-1920x855.png');
+assert.deepEqual(errors,[]);await browser.close();console.log(JSON.stringify({passed:true,viewport:'1920x855',screenshots:12,hpAfterAttack:14,liliaExp:10,nextActor:'ミレイユ',consoleErrors:errors}));

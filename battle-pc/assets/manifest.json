@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "approval_note": "New generated images are implementation candidates, not user-approved identity masters. Existing repository Lilia remains the reference.",
+  "approval_note": "Lilia's high-resolution sprite candidate was explicitly approved for integration by the user on 2026-10-19. Other generated images remain candidates until separately approved.",
   "projection": {
     "canvas": [
       1824,
@@ -153,15 +153,16 @@
       "asset_id": "unit-lilia",
       "file": "assets/unit-lilia.png",
       "parent": "cast-v1",
-      "operation": "lossless atlas cell extraction",
-      "crop": [
-        0,
-        0,
-        384,
-        512
+      "operation": "integrated user-approved high-resolution Lilia sprite candidate",
+      "source_candidate": "evidence/quality-candidate/unit-lilia-candidate.png",
+      "original_preserved_at": "evidence/quality-candidate/unit-lilia-original-384x512.png",
+      "resolution": [
+        1086,
+        1448
       ],
       "alpha": true,
-      "status": "candidate-unreviewed",
+      "status": "user-approved-integrated",
+      "sha256": "9a65b91ef237e0d3bd433b2467424efa273a5d117239d8be6f8ff9cbbf678c66",
       "display": {
         "height": 128,
         "anchor": [
@@ -444,6 +445,54 @@
       ],
       "alpha": true,
       "status": "candidate-unreviewed"
+    },
+    {
+      "asset_id": "fx-lilia-slash",
+      "file": "assets/fx-lilia-slash.png",
+      "purpose": "Lilia close-range sword slash VFX",
+      "reference_version": "Original built-in image_gen output; does not alter or replace character identity assets",
+      "prompt": "One elegant white-silver sword slash arc sprite for a refined fantasy tactics game. Transparent background with true alpha. Wide diagonal crescent sweep from lower-left to upper-right, luminous ivory core with restrained cool silver-blue edge, fine tapered tips and a few small glints. Painterly 2D game VFX, crisp readable silhouette, restrained and beautiful. No weapon, no characters, no text, no frame, no shadow. Centered on square canvas, generous transparent padding.",
+      "created_date": "2026-10-18",
+      "generator": "built-in image_gen",
+      "resolution": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "sha256": "f6a6d4cbc27f275f2ed2f82d2dd4055f8f587d40b368a6def361703682945eb9"
+    },
+    {
+      "asset_id": "fx-lilia-impact",
+      "file": "assets/fx-lilia-impact.png",
+      "purpose": "Lilia close-range hit sparkle VFX",
+      "reference_version": "Original built-in image_gen output; does not alter or replace character identity assets",
+      "prompt": "One high-quality compact fantasy game hit-impact sprite, elegant white-silver hit sparks for a refined tactics RPG. Transparent background with true alpha. Tight compact radial burst, ivory-white central flash, thin sharp cool silver-blue rays and a handful of tiny diamond-shaped spark fragments bursting radially, painterly 2D effect with crisp silhouette, understated and luminous. No characters, no weapon, no text, no frame, no background, no ground shadow. Centered in square canvas with transparent padding.",
+      "created_date": "2026-10-18",
+      "generator": "built-in image_gen",
+      "resolution": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "sha256": "0e10cc1aa29ec0cd4c0a929d3b498f5686c0017a23fb7e6077f1d12e43707e7e"
+    },
+    {
+      "asset_id": "fx-lilia-defeat",
+      "file": "assets/fx-lilia-defeat.png",
+      "purpose": "Lilia close-range enemy defeat particle VFX",
+      "reference_version": "Original built-in image_gen output; does not alter or replace character identity assets",
+      "prompt": "A delicate cluster of defeat particles for a refined white-silver fantasy tactics game: luminous translucent ivory petals and tiny silver-blue crystal motes drifting outward and upward, elegant and quiet rather than violent, painterly 2D game VFX. Transparent background with true alpha. Designed as a standalone sprite that can be scaled and faded by animation. No character, no weapon, no text, no frame, no background, no shadow. Centered composition on a square canvas, clear silhouette and generous transparent padding.",
+      "created_date": "2026-10-18",
+      "generator": "built-in image_gen",
+      "resolution": [
+        1254,
+        1254
+      ],
+      "alpha": true,
+      "status": "candidate-unreviewed",
+      "sha256": "de3d9328fd88274338f6ae330eed746b2049a1a236e87e1484a40d5d0893ad6e"
     }
   ]
 }
