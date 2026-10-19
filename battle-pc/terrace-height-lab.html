@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>銀花戦記 — テラス段差比較</title>
+  <link rel="stylesheet" href="/src/terrace-height-lab.css" />
+</head>
+<body>
+  <header>
+    <p class="eyebrow">GINKA SENKI · VISUAL PROTOTYPE</p>
+    <h1>テラス段差の高さ比較</h1>
+    <p class="intro">元の戦場背景とリリアを同じ縮尺で表示しています。旧比較表示を残し、仕上げ案では階段を設けず、隣接マスの高低差だけで移動を確認します。</p>
+    <p class="scale-note">数値は基準描画領域 1824 × 864 のワールドpx／段。比較中はこのテラスだけに適用。</p>
+  </header>
+  <main id="candidates" aria-label="段差高さの比較"></main>
+  <section class="finished-lab" aria-labelledby="finished-title">
+    <div class="finished-copy">
+      <p class="eyebrow">LOCAL TERRACE STUDY</p>
+      <h2 id="finished-title">石造テラス — 56px仕上げ案</h2>
+      <p>高さ表示を隠した状態で、上面・側壁とリリアの接地を確認します。隣接する1段差は移動できます。2段差は一度に移動できません。</p>
+      <div class="height-switch" role="group" aria-label="段差の高さ">
+        <button type="button" data-rise="1" aria-pressed="true">1段差 <span>56px</span></button>
+        <button type="button" data-rise="2" aria-pressed="false">2段差 <span>112px</span></button>
+      </div>
+    </div>
+    <div id="finished-scene" aria-live="polite"></div>
+    <p class="finished-hint" id="finished-hint"><strong>リリアは下段にいます</strong><span>隣接する上面をクリックして1段上へ移動</span></p>
+  </section>
+  <footer>上面または隣接する歩行面をクリックして移動します。画面倍率やウィンドウサイズを変えても、高さと人物は同じ倍率で拡縮します。</footer>
+  <script type="module" src="/src/terrace-height-lab.ts"></script>
+</body>
+</html>
