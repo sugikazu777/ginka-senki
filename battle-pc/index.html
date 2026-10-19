@@ -4,6 +4,19 @@
 <aside class="party"><div class="eyebrow">銀花の騎士団 <span>ALLY UNITS</span></div><div id="roster"></div><div class="turn-order panel"><small>行動順 · SPEED ORDER</small><div id="order"></div></div></aside>
 <aside class="right"><section class="panel objective"><small>◇ 勝利条件</small><select id="mission" aria-label="作戦選択"><option value="wipe">敵の全滅</option><option value="capture">リリアで拠点制圧</option><option value="escort">使節を橋の北へ護衛</option></select><p id="remaining"></p></section><p class="poem">この大地に<br>また、花が咲くように。</p><section id="enemy" class="panel enemy"><small>ENEMY INTELLIGENCE</small><h2>敵情報</h2><p>敵にカーソルを合わせると<br>能力と射程を確認できます。</p></section></aside>
 <section class="tile-info panel"><small id="tile-label">草地　／　高さ 0</small><p>地形・向きによる戦闘補正なし</p><div class="legend"><i></i>移動 <i></i>攻撃 <i></i>経路</div></section>
+<aside id="g02-panel" class="panel g02-panel" aria-label="G02 地形診断" hidden>
+ <div class="g02-heading"><div><small>G02 · SPATIAL DIAGNOSTICS</small><strong>地形診断</strong></div><span class="g02-paused">戦闘停止中</span></div>
+ <button id="g02-visibility" class="g02-visibility" type="button">診断表示を隠す</button>
+ <label class="g02-toggle"><input id="g02-grid" type="checkbox" checked> 論理グリッド</label><div id="g02-count" class="g02-count"></div>
+ <label class="g02-toggle"><input id="g02-labels" type="checkbox" checked> マス情報</label>
+ <label class="g02-mode">座標ラベル <select id="g02-label-mode"><option value="all">全マス</option><option value="hover">照準マスのみ</option></select></label>
+ <label class="g02-toggle"><input id="g02-anchors" type="checkbox" checked> 人物の足元基準</label>
+ <label class="g02-alpha">重ね表示の濃さ <input id="g02-opacity" type="range" min="0" max="100" value="62"><span id="g02-opacity-value">62%</span></label>
+ <div class="g02-legend"><span><i class="h0"></i>H0</span><span><i class="h1"></i>H1</span><span><i class="h2"></i>H2</span><span><i class="blocked"></i>通行不可</span></div>
+ <div class="g02-legend g02-anchor-legend"><span>○ マス中心</span><span>＋ 描画アンカー</span></div>
+ <div id="g02-info" class="g02-info" aria-live="polite">マスにカーソルを合わせてください。</div>
+ <button id="g02-exit" class="g02-exit" type="button">診断を終了して戦闘へ戻る</button>
+</aside>
 <footer><section class="selected panel" id="selected"></section><div id="stage-guide" class="stage-guide" role="status" aria-live="polite"><span class="guide-title"></span><span class="guide-detail"></span></div><div class="commands"><button id="move" class="command active"><b>♧</b><span>移動</span><kbd>M</kbd></button><button id="attack" class="command"><b>⚔</b><span>攻撃</span><kbd>A</kbd></button><button id="danger" class="command"><b>◇</b><span>敵の範囲</span><kbd>D</kbd></button><button id="wait" class="command"><b>⌛</b><span>待機</span><kbd>W</kbd></button><button id="undo-move" class="command" hidden><b>↶</b><span>移動を戻す</span></button></div></footer>
 <div class="camera"><button id="zoom-out" aria-label="縮小">−</button><button id="recenter">視点を戻す</button><button id="zoom-in" aria-label="拡大">＋</button></div><div class="controls-hint">ホイール：ズーム　／　ドラッグ：スクロール</div>
 <dialog id="help-dialog"><h2>風紡ぐ橋</h2><p>味方は素早さ順に行動します。顔アイコンから全員の情報を確認できます。</p><p>青いマスをクリックすると経路を表示。もう一度クリックで移動します。<br>「攻撃」を選び、赤い範囲の敵をクリックして予測を確認し、再クリックで攻撃します。<br>移動後の攻撃、または「待機」で次の味方へ進みます。</p><p>川・岩は通行不可。移動できる段差は1段まで。高さ・向きの戦闘補正はありません。<br>攻撃でEXP＋10、撃破で＋30。100で固定成長します。リリアの戦闘不能で敗北します。</p><p>M 移動　A 攻撃　D 敵範囲　W 待機　Esc：攻撃対象→経路予告を解除（移動取消は画面ボタン）<br>ホイールでズーム、ドラッグで移動、視点を戻すボタンで全体表示。</p><button id="close-help">戦場へ戻る</button><button id="restart">最初から</button></dialog>

@@ -102,3 +102,15 @@ Windowsローカル / Node 24.19 / Chromium 156 / PixiJS WebGL / Playwright。�
 - [高精細化の同サイズ比較](evidence/visual-ui-20261019/05-lilia-before-candidate-comparison.png) ／ [拡大確認](evidence/visual-ui-20261019/06-lilia-same-size-closeup.png)
 
 リリアの戦場素材は384×512から1086×1448へ差し替え、画面上の表示高さ128、足元アンカー、HP表示位置は維持しています。差し替え前の素材と比較候補は `evidence/quality-candidate/` に保存しています。他の人物素材は変更していません。
+
+## G02 戦場空間整合性診断 — 2026-10-19
+
+| 確認 | 結果 |
+| --- | --- |
+| `npm test` | 11 / 11 PASS |
+| `npm run test:g02` | PASS。1920×855で通常表示、診断表示、全80セル、地形/高さ/人物クリック、透明度0、ホバーラベル、ズーム・ドラッグ後の再判定、診断前後の戦闘状態不変をブラウザー操作で検証 |
+| `npm run build` | PASS。TypeScriptチェックおよびVite製品ビルド |
+| 診断中の状態 | ラウンド、行動順、全ユニット位置・HP・EXP・行動状態は診断前後で同一 |
+| 集計 | 80マス、高さ0/1/2、通行可能65、不可15。ゲーム内の現行マップから算出 |
+
+診断デモ、観察した地点、分類と残る不確実性は [`../docs/G02_SPATIAL_DIAGNOSTICS.md`](../docs/G02_SPATIAL_DIAGNOSTICS.md)。証拠画像と機械可読結果は `evidence/g02-20261019/` に保存しています。
