@@ -76,7 +76,7 @@ function renderFinished(){
   const sprite=`<image class="person" href="${liliaUrl}" x="${unit.x-48}" y="${unit.y-128}" width="96" height="128" preserveAspectRatio="xMidYMax meet"/>`;
   const lowPerson=!finishedTop?`${shadow}${sprite}`:'';
   const highPerson=finishedTop?`${shadow}${sprite}`:'';
-  const surfaces=`<polygon points="${finishedPoly(backFace)}" fill="url(#stone-wall)"/><polygon points="${finishedPoly(westFace)}" fill="url(#stone-wall)"/><polygon points="${finishedPoly(eastFace)}" fill="url(#stone-wall)"/><polygon points="${finishedPoly(frontFace)}" fill="url(#stone-wall)"/>`;
+  const surfaces=`<polygon class="sidewall" points="${finishedPoly(backFace)}" fill="url(#stone-wall)"/><polygon class="sidewall" points="${finishedPoly(westFace)}" fill="url(#stone-wall)"/><polygon class="sidewall" points="${finishedPoly(eastFace)}" fill="url(#stone-wall)"/><polygon class="sidewall" points="${finishedPoly(frontFace)}" fill="url(#stone-wall)"/>`;
   const clickAreas=`<polygon class="click-area" data-finish-click data-cell-height="${topZ}" points="${finishedPoly(upper)}"/><polygon class="click-area" data-finish-click data-cell-height="0" points="${finishedPoly(lowCell)}"/>`;
   finishedHost.innerHTML=`<svg class="finished-scene" viewBox="${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}" role="img" aria-label="石造テラス56px仕上げ案">
     <defs>
@@ -90,13 +90,12 @@ function renderFinished(){
     </defs>
     <image href="${backgroundUrl}" x="0" y="0" width="1824" height="864" preserveAspectRatio="none"/>
     <ellipse cx="${project(4.5,.5,0,step).x}" cy="${project(4.5,.5,0,step).y+12}" rx="176" ry="30" fill="#0b1715" opacity=".32" filter="url(#ground-blur)"/>
-    ${finishedRise===1?'':lowPerson}
     ${surfaces}
-    <polygon points="${finishedPoly(frontFace)}" fill="url(#wall-light)"/>
-    <polygon points="${finishedPoly(westFace)}" fill="url(#wall-light)"/>
-    ${finishedRise===1?lowPerson:''}
-    <g clip-path="url(#upper-clip)"><image href="${backgroundUrl}" x="0" y="${-topZ*step}" width="1824" height="864" preserveAspectRatio="none"/><rect x="0" y="0" width="1824" height="864" fill="#c4b88e" opacity=".09"/></g>
-    <path d="M ${finishedPoint(upper[3])} L ${finishedPoint(upper[2])}" stroke="#eadcba" stroke-opacity=".52" stroke-width="2"/>
+    <polygon class="wall-shade" points="${finishedPoly(frontFace)}" fill="url(#wall-light)"/>
+    <polygon class="wall-shade" points="${finishedPoly(westFace)}" fill="url(#wall-light)"/>
+    <g class="upper-surface" clip-path="url(#upper-clip)"><image href="${backgroundUrl}" x="0" y="${-topZ*step}" width="1824" height="864" preserveAspectRatio="none"/><rect x="0" y="0" width="1824" height="864" fill="#c4b88e" opacity=".09"/></g>
+    <path class="upper-edge" d="M ${finishedPoint(upper[3])} L ${finishedPoint(upper[2])}" stroke="#eadcba" stroke-opacity=".52" stroke-width="2"/>
+    ${lowPerson}
     ${highPerson}
     ${clickAreas}
   </svg>`;

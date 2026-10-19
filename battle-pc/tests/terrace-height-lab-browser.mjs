@@ -5,12 +5,17 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 
 const here=path.dirname(fileURLToPath(import.meta.url));
-const evidence=path.resolve(here,'../evidence/terrace-height-56-20261019');
+const evidence=path.resolve(here,'../evidence/terrace-height-occlusion-fix-20261019');
 fs.mkdirSync(evidence,{recursive:true});
 const browser=await chromium.launch({headless:true});
 const page=await browser.newPage({viewport:{width:1920,height:855},deviceScaleFactor:1});
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
 const save=async name=>page.screenshot({path:path.join(evidence,name)});
+const assertLowUnitOverTerrain=async scene=>scene.evaluate(svg=>{
+  const person=svg.querySelector('.person');
+  const terrain=[...svg.querySelectorAll('.sidewall,.wall-shade,.upper-surface,.upper-edge')];
+  return terrain.every(part=>Boolean(part.compareDocumentPosition(person)&Node.DOCUMENT_POSITION_FOLLOWING));
+});
 const clickCell=async(scene,height)=>{
   await scene.scrollIntoViewIfNeeded();
   const point=await scene.evaluate((el,target)=>{const svg=el,rect=svg.getBoundingClientRect(),[vx,vy,vw,vh]=(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number),cell=svg.querySelector(`[data-cell-height="${target}"]`),box=cell.getBBox(),wx=box.x+box.width/2,wy=box.y+box.height/2;return{x:rect.left+(wx-vx)*rect.width/vw,y:rect.top+(wy-vy)*rect.height/vh};},height);
@@ -27,8 +32,9 @@ try{
   assert.equal(await page.locator('.candidate [data-stair],.candidate .stair-tread').count(),0,'40/48/56 comparison retains its height views without physical stairs');
   await save('00-after-comparison.png');
   await page.locator('#finished-title').scrollIntoViewIfNeeded();
-  await save('01-finished-56-lower-desktop.png');
   const scene=page.locator('#finished-scene svg');
+  assert.ok(await assertLowUnitOverTerrain(scene),'at one level, the low character renders in front of the rear ledge and upper surface');
+  await save('01-fixed-56-lower-desktop.png');
   const lower=await scene.locator('.person').evaluate(el=>({x:Number(el.getAttribute('x')),y:Number(el.getAttribute('y'))}));
   assert.equal(await scene.locator('.click-area').count(),2,'only visible upper and adjacent lower walkable cells are clickable; no stair is added');
   assert.equal(await scene.locator('[data-stair],.stair-tread').count(),0,'finished terrace has no physical staircase');
@@ -47,14 +53,15 @@ try{
   await save('03-finished-56-lower-after-descent.png');
   await page.locator('[data-rise="2"]').click();
   assert.equal(await page.locator('[data-rise="2"]').getAttribute('aria-pressed'),'true');
-  await save('04-finished-112-lower-desktop.png');
+  assert.ok(await assertLowUnitOverTerrain(scene),'at two levels, the low character still renders in front of the ledge behind it');
+  await save('02-fixed-112-lower-desktop.png');
   await clickCell(page.locator('#finished-scene svg'),2);
   await page.waitForTimeout(100);
   hint=await page.locator('#finished-hint').innerText();
   sprite=await page.locator('#finished-scene .person').evaluate(el=>({x:Number(el.getAttribute('x')),y:Number(el.getAttribute('y'))}));
   assert.match(hint,/一度に移動できません/,'direct 2-level movement is rejected by the one-level rule');
   assert.deepEqual(sprite,lower,'rejected 2-level movement leaves the unit in place');
-  await save('05-finished-112-direct-climb-rejected.png');
+  await save('03-fixed-112-direct-climb-rejected.png');
   await page.locator('[data-rise="1"]').click();
   await page.setViewportSize({width:390,height:844});
   await scene.scrollIntoViewIfNeeded();
@@ -64,7 +71,7 @@ try{
   assert.match(await page.locator('#finished-hint').innerText(),/1段上の面にいます/,'mobile tap completes the same one-level move');
   await save('07-finished-56-phone-upper.png');
   assert.deepEqual(errors,[],'page has no browser errors');
-  const results={screenshots:'Playwright Chromium; real external Chrome manual clicks are checked separately',desktopViewport:'1920x855',phoneViewport:'390x844',comparison,lower,upper,physicalStairAdded:false,oneLevelUpAndDown:true,twoLevelDirectMoveRejected:true,rapidRepeatedClickIgnored:true,mobileTap:true,pageErrors:errors,evidence};
-  fs.writeFileSync(path.join(evidence,'terrace-height-56-results.json'),JSON.stringify(results,null,2));
+  const results={screenshots:'Playwright Chromium; real external Chrome manual clicks are checked separately',desktopViewport:'1920x855',phoneViewport:'390x844',comparison,lower,upper,physicalStairAdded:false,oneLevelUpAndDown:true,twoLevelDirectMoveRejected:true,lowUnitOverTerrainAtOneAndTwoLevels:true,rapidRepeatedClickIgnored:true,mobileTap:true,pageErrors:errors,evidence};
+  fs.writeFileSync(path.join(evidence,'terrace-height-occlusion-fix-results.json'),JSON.stringify(results,null,2));
   process.stdout.write(JSON.stringify(results,null,2));
 }finally{await browser.close();}

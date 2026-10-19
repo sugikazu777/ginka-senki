@@ -1,0 +1,41 @@
+{
+  "screenshots": "Playwright Chromium; real external Chrome manual clicks are checked separately",
+  "desktopViewport": "1920x855",
+  "phoneViewport": "390x844",
+  "comparison": [
+    {
+      "height": 40,
+      "unit": "/assets/unit-lilia.png",
+      "viewBox": "876 72 608 477",
+      "spriteScreenHeight": 124.21052631578948
+    },
+    {
+      "height": 48,
+      "unit": "/assets/unit-lilia.png",
+      "viewBox": "876 72 608 477",
+      "spriteScreenHeight": 124.21052631578948
+    },
+    {
+      "height": 56,
+      "unit": "/assets/unit-lilia.png",
+      "viewBox": "876 72 608 477",
+      "spriteScreenHeight": 124.21052631578948
+    }
+  ],
+  "lower": {
+    "x": 1179,
+    "y": 281
+  },
+  "upper": {
+    "x": 1267,
+    "y": 182
+  },
+  "physicalStairAdded": false,
+  "oneLevelUpAndDown": true,
+  "twoLevelDirectMoveRejected": true,
+  "lowUnitOverTerrainAtOneAndTwoLevels": true,
+  "rapidRepeatedClickIgnored": true,
+  "mobileTap": true,
+  "pageErrors": [],
+  "evidence": "C:\\Projects\\ginka-senki\\battle-pc\\evidence\\terrace-height-occlusion-fix-20261019"
+}
