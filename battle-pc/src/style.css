@@ -42,3 +42,28 @@ footer{width:520px;bottom:12px}
 @media(max-width:960px){footer{width:min(520px,calc(100vw - 20px))}.commands{gap:7px}.command{width:90px;flex-basis:90px;height:64px}.commands.with-undo .command:not(#undo-move){width:82px;flex-basis:82px}.commands.with-undo #undo-move{width:88px;flex-basis:88px;height:64px}}
 .unit-card.current .name{padding-right:46px}
 .unit-card em{right:6px;top:5px;font:600 9px/1.2 'Yu Gothic','Meiryo',sans-serif;letter-spacing:0;white-space:nowrap}
+/* G02 spatial diagnostic demo: query-gated and isolated from normal play. */
+.g02-panel{position:absolute;z-index:4;top:142px;left:246px;width:294px;max-height:calc(100vh - 158px);overflow:auto;padding:14px 15px;background:linear-gradient(135deg,#0c2a3fee,#102d41ed);border-color:#85b7c799;box-shadow:0 7px 24px #05162388,inset 0 0 0 2px #20415466;font:12px/1.55 'Yu Gothic',Meiryo,sans-serif;color:#eef6ef;pointer-events:auto}
+.g02-panel[hidden]{display:none}
+.g02-heading{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #98b9c255;padding-bottom:9px;margin-bottom:8px}
+.g02-heading small{display:block;font:8px Georgia,sans-serif;letter-spacing:.13em;color:#a8cad2}
+.g02-heading strong{font-size:18px;letter-spacing:.08em;color:#f4e7bd}
+.g02-paused{padding:3px 7px;border:1px solid #73dfd277;border-radius:12px;color:#baf4ec;font-size:10px;white-space:nowrap}
+.g02-visibility,.g02-exit{width:100%;min-height:30px;margin:2px 0 7px;border:1px solid #92bdc677;border-radius:3px;background:#173b50;color:#f2f5ec;font:12px 'Yu Gothic',Meiryo,sans-serif}
+.g02-toggle,.g02-mode,.g02-alpha{display:flex;align-items:center;gap:8px;margin:6px 0;color:#e2ece9}
+.g02-toggle input{margin:0;accent-color:#69d9e6}
+.g02-count{margin:-4px 0 5px 22px;color:#b5d7df;font:10px/1.4 'Yu Gothic',Meiryo,sans-serif}
+.g02-mode{justify-content:space-between}
+.g02-mode select{width:118px;margin:0;padding:4px 6px;border:1px solid #789aa1;background:#102a3b;color:#eef6ef;font-size:11px}
+.g02-alpha{gap:6px;flex-wrap:wrap}
+.g02-alpha input{flex:1;min-width:105px;accent-color:#75dfec}
+.g02-alpha span{width:33px;text-align:right;color:#f1e5ba;font-variant-numeric:tabular-nums}
+.g02-legend{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 4px;padding:6px 7px;border:1px solid #b1c5c533;border-radius:3px;background:#091f2b66;font-size:10px}
+.g02-legend span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.g02-legend i{display:inline-block;width:11px;height:11px;border:2px solid;border-radius:2px}
+.g02-legend i.h0{border-color:#79dfa6}.g02-legend i.h1{border-color:#74c8ff}.g02-legend i.h2{border-color:#ffd27f}.g02-legend i.blocked{background:#e14d6266;border-color:#e14d62}
+.g02-anchor-legend{color:#d9edf0}
+.g02-info{min-height:108px;white-space:pre-line;margin:8px 0;padding:9px 10px;border-left:2px solid #71dbea;background:#071c2bbd;color:#f2f1dd;font:11px/1.65 'Yu Gothic',Meiryo,sans-serif}
+.g02-exit{margin:5px 0 0;border-color:#c2b58b99;background:#263e49;color:#f2e6c0}
+body:has(#g02-panel:not([hidden])) .tile-info{filter:brightness(.72)}
+@media(max-width:1100px){.g02-panel{left:auto;right:12px;top:132px;width:258px;max-height:calc(100vh - 145px)}}
