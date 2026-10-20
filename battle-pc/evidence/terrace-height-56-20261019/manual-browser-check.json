@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-19",
+  "externalChrome": {
+    "viewport": "1920x855 CSS px",
+    "zoom": "100%",
+    "manualActions": [
+      "Scrolled to the finished terrace panel.",
+      "Clicked the raised H1 surface; Lilia moved up one level and the hint changed to the H1 landing.",
+      "Clicked the adjacent H0 walking cell; Lilia returned to the lower position.",
+      "Selected 112px and clicked H2; the move was rejected with the one-level limit message, while Lilia remained below and was partly occluded by the taller wall."
+    ],
+    "screenshotFile": "See Playwright evidence images in this folder; external Chrome was used for manual interaction verification and is not the source of those saved PNGs."
+  },
+  "automatedEvidence": {
+    "engine": "Playwright Chromium",
+    "desktopViewport": "1920x855 CSS px",
+    "mobileViewport": "390x844 CSS px",
+    "browserZoom": "100%",
+    "display": "No diagnostic colors or height labels in the finished panel; height buttons only.",
+    "files": [
+      "01-finished-56-lower-desktop.png",
+      "02-finished-56-upper-desktop.png",
+      "03-finished-56-lower-after-descent.png",
+      "04-finished-112-lower-desktop.png",
+      "05-finished-112-direct-climb-rejected.png",
+      "06-finished-56-phone-lower.png",
+      "07-finished-56-phone-upper.png"
+    ]
+  }
+}
