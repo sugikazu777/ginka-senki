@@ -1,0 +1,114 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { chromium } from '@playwright/test';
+
+const here=path.dirname(fileURLToPath(import.meta.url));
+const evidence=path.resolve(here,'../evidence/g02-followup-20261019');
+fs.mkdirSync(evidence,{recursive:true});
+const browser=await chromium.launch({headless:true});
+const page=await browser.newPage({viewport:{width:1920,height:855},deviceScaleFactor:1});
+const errors=[];
+page.on('pageerror',e=>errors.push(e.message));
+const base=process.env.BATTLE_URL||'http://127.0.0.1:4173/';
+const state=()=>page.evaluate(()=>window.battleDebug.snapshot());
+const battleSignature=s=>JSON.stringify({phase:s.phase,round:s.round,result:s.result,active:s.active,units:s.units.map(({id,x,y,hp,exp,done,moved})=>({id,x,y,hp,exp,done,moved}))});
+const shot=async name=>page.screenshot({path:path.join(evidence,name),animations:'disabled'});
+const tile=(s,x,y)=>{const value=s.tiles.find(t=>t.x===x&&t.y===y);assert.ok(value,`tile (${x},${y}) exists`);return value};
+const boundaryProbe=async(aPos,bPos,capture)=>{const s=await state(),a=tile(s,...aPos),b=tile(s,...bPos),dx=b.screen.x-a.screen.x,dy=b.screen.y-a.screen.y,length=Math.hypot(dx,dy),mx=(a.screen.x+b.screen.x)/2,my=(a.screen.y+b.screen.y)/2,observed=[];for(const sign of [-1,1]){const x=mx+sign*dx/length*length*.2,y=my+sign*dy/length*length*.2;await page.mouse.move(x,y);await page.mouse.click(x,y);const info=await page.locator('#g02-info').innerText(),expected=sign<0?aPos:bPos;assert.ok(info.includes(`(${expected[0]}, ${expected[1]}) / H`),`near-boundary side expected (${expected.join(', ')}): ${info}`);observed.push({expected,info:info.split('\n')[1]})}await page.mouse.move(mx,my);await page.mouse.click(mx,my);const middle=await page.locator('#g02-info').innerText(),match=middle.match(/\((\d+), (\d+)\) \/ H(\d+)/);if(capture)await shot(capture);return{between:[aPos,bPos],observed,midpoint:match?{x:Number(match[1]),y:Number(match[2]),height:Number(match[3])}:null,midpointInfo:middle.split('\n')[0]}};
+const metadata=[];
+
+try{
+ await page.goto(`${base}?debug=1&g02=1`);
+ await page.waitForFunction(()=>window.battleDebug);
+ await page.waitForTimeout(500);
+ const before=await state();
+ assert.equal(before.diagnosticActive,true);
+ assert.equal(await page.locator('#wait').isEnabled(),false);
+ assert.ok(before.diagnosticAnchorMarkCount>0);
+ await shot('01-diagnostic-paused-initial.png');
+ await page.getByRole('button',{name:'フィオナを選択'}).click();
+ const afterFiona=await state();
+ assert.equal(afterFiona.active,before.active,'card browsing must not advance the active actor');
+ assert.equal(afterFiona.selected,2,'Fiona remains selectable for information viewing');
+ assert.equal(battleSignature(afterFiona),battleSignature(before),'card browsing must not change battle state');
+ for(const id of ['#move','#attack','#danger','#wait','#undo-move','#mission','#help','#restart','#again'])assert.equal(await page.locator(id).isEnabled(),false,`${id} stays disabled while diagnosis is active`);
+ await page.locator('#wait').dispatchEvent('click');
+ for(const id of ['#move','#attack','#danger','#undo-move','#restart','#again','#help'])await page.locator(id).dispatchEvent('click');
+ await page.locator('#mission').evaluate(el=>{el.value='capture';el.dispatchEvent(new Event('change',{bubbles:true}))});
+ assert.equal(await page.locator('#mission').inputValue(),'wipe','attempted mission change is restored while diagnosis is active');
+ await page.keyboard.press('w');
+ assert.equal(battleSignature(await state()),battleSignature(before),'disabled control events and wait shortcut are blocked during diagnosis');
+ await page.getByRole('button',{name:'リリアを選択'}).click();
+ assert.equal((await state()).selected,0,'out-of-turn card remains available for information browsing');
+ assert.equal((await state()).active,before.active,'browsing another card does not replace the active actor');
+ assert.equal(await page.locator('#wait').isEnabled(),false,'browsing another card cannot enable wait');
+ await page.getByRole('button',{name:'フィオナを選択'}).click();
+ assert.equal((await state()).selected,before.selected,'active card can be reselected after browsing');
+ await shot('02-fiona-card-still-paused.png');
+
+ const markerOn=await state();
+ await page.locator('#g02-anchors').uncheck();
+ assert.equal((await state()).diagnosticAnchorMarkCount,0,'turning anchors off clears drawing commands immediately');
+ await shot('03-foot-anchors-off.png');
+ await page.locator('#g02-anchors').check();
+ assert.ok((await state()).diagnosticAnchorMarkCount>0,'turning anchors on redraws both markers');
+ await shot('04-foot-anchors-on.png');
+ await page.locator('#g02-hide-hp').check();
+ assert.equal((await state()).diagnosticHpVisible,false,'diagnostic HP hide toggle hides the HP layer');
+ await shot('05-foot-anchors-on-hp-hidden.png');
+ await page.locator('#g02-hide-hp').uncheck();
+ assert.equal((await state()).diagnosticHpVisible,true);
+
+ await page.locator('#g02-opacity').fill('0');
+ assert.equal((await state()).diagnosticAnchorMarkCount,0,'zero overlay opacity clears anchor drawing');
+ await page.locator('#g02-opacity').fill('62');
+ assert.ok((await state()).diagnosticAnchorMarkCount>0);
+ await page.getByRole('button',{name:'診断表示を隠す'}).click();
+ assert.equal((await state()).diagnosticAnchorMarkCount,0,'hiding all diagnostics clears anchors');
+ await page.getByRole('button',{name:'診断表示を表示'}).click();
+ assert.ok((await state()).diagnosticAnchorMarkCount>0);
+
+ for(const [x,y,name] of [[5,3,'06-bank-5-3.png'],[7,3,'07-cliff-7-3.png'],[4,2,'08-bridge-edge-h1-4-2.png'],[4,3,'09-bridge-edge-h0-4-3.png']]){
+   const s=await state(),t=tile(s,x,y);
+   await page.mouse.move(t.screen.x,t.screen.y);
+   await page.mouse.click(t.screen.x,t.screen.y);
+   await page.waitForTimeout(100);
+   const info=await page.locator('#g02-info').innerText();
+   assert.ok(info.includes(`(${x}, ${y}) / H${t.h}`),info);
+   await shot(name);
+   metadata.push({file:name,coordinate:[x,y],height:t.h,terrain:t.type,walk:t.walk,viewport:'1920x855',zoom:s.zoom,pan:s.pan,grid:true,labels:true,anchors:true,opacity:62});
+ }
+ const boundaries=[];
+ boundaries.push(await boundaryProbe([5,3],[6,3]));
+ boundaries.push(await boundaryProbe([5,3],[5,2],'13-bank-height-boundary.png'));
+ boundaries.push(await boundaryProbe([7,3],[6,3]));
+ boundaries.push(await boundaryProbe([7,3],[7,2]));
+ boundaries.push(await boundaryProbe([4,2],[4,3],'14-bridge-height-boundary.png'));
+ await page.locator('#zoom-in').click();
+ const zoomed=await state();
+ const ztile=tile(zoomed,7,3);
+ await page.mouse.click(ztile.screen.x,ztile.screen.y);
+ await shot('10-cliff-7-3-zoom.png');
+ await page.mouse.move(1170,470);await page.mouse.down();await page.mouse.move(1220,510,{steps:8});await page.mouse.up();
+ const panned=await state(),ptile=tile(panned,5,3);
+ await page.mouse.click(ptile.screen.x,ptile.screen.y);
+ assert.ok((await page.locator('#g02-info').innerText()).includes('(5, 3)'));
+ await shot('11-bank-5-3-zoom-pan.png');
+ metadata.push({file:'10-cliff-7-3-zoom.png',coordinate:[7,3],viewport:'1920x855',zoom:zoomed.zoom,pan:zoomed.pan,grid:true,labels:true,anchors:true,opacity:62},{file:'11-bank-5-3-zoom-pan.png',coordinate:[5,3],viewport:'1920x855',zoom:panned.zoom,pan:panned.pan,grid:true,labels:true,anchors:true,opacity:62});
+ assert.equal(battleSignature(await state()),battleSignature(before),'diagnostic terrain inspection never changes battle state');
+
+ await page.getByRole('button',{name:'診断を終了して戦闘へ戻る'}).click();
+ const resumed=await state();
+ assert.equal(resumed.diagnosticActive,false);
+ assert.equal(resumed.selected,before.selected,'diagnosis exit restores the prior selected actor');
+ assert.equal(resumed.active,before.active);
+ assert.equal(await page.locator('#wait').isEnabled(),true,'normal action controls are recomputed after diagnosis');
+ assert.equal(battleSignature(resumed),battleSignature(before));
+ await shot('12-normal-play-resumed.png');
+ assert.deepEqual(errors,[],'no browser errors');
+ const result={viewport:'1920x855',before:{active:before.active,selected:before.selected},afterCard:{active:afterFiona.active,selected:afterFiona.selected},afterExit:{active:resumed.active,selected:resumed.selected},statePreserved:true,anchorToggle:'immediate clear and redraw; zero opacity/all-overlay hidden also clear',hpHide:true,terrain:metadata,boundaries,pageErrors:errors,evidence};
+ fs.writeFileSync(path.join(evidence,'g02-followup-browser-results.json'),JSON.stringify(result,null,2)+'\n');
+ console.log(JSON.stringify(result,null,2));
+}finally{await browser.close()}
