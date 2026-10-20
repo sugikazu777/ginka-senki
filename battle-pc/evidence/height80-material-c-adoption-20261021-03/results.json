@@ -1,0 +1,112 @@
+{
+  "passed": true,
+  "browser": "visible external Google Chrome controlled through Playwright",
+  "viewport": "1920x855, deviceScaleFactor 1",
+  "compareUrls": {
+    "b": "http://127.0.0.1:4175/?height80=1&height80-panel=1&height80-panel-open=0&height80-material=soil-rock&height80-art=b&height80-tactics=1&debug=1",
+    "c": "http://127.0.0.1:4175/?height80=1&height80-panel=1&height80-panel-open=0&height80-material=soil-rock&height80-art=c&height80-tactics=1&debug=1"
+  },
+  "heightMapping": {
+    "0": [
+      0
+    ],
+    "1": [
+      80
+    ],
+    "2": [
+      160
+    ]
+  },
+  "bCInitialStateEqual": true,
+  "adoptedDefault": {
+    "firstOpen": "C",
+    "reload": "C",
+    "newTab": "C",
+    "height80ArtWrittenToUrl": true
+  },
+  "artSwitchPreservedState": true,
+  "leftGrassMaterial": "B renderer retained in both B and C",
+  "h1Route": [
+    2,
+    7
+  ],
+  "zoomPan": {
+    "zoom": 1.2544000000000002,
+    "pan": {
+      "x": 25,
+      "y": 30
+    }
+  },
+  "moveUndo": {
+    "movedTo": [
+      2,
+      7
+    ],
+    "restoredTo": [
+      1,
+      7
+    ],
+    "movedFlagRestored": false
+  },
+  "sidewallClick": {
+    "rejected": true,
+    "probe": {
+      "screen": {
+        "x": 581.5666666666666,
+        "y": 533.842
+      },
+      "tile": [
+        2,
+        7
+      ],
+      "side": "x"
+    }
+  },
+  "northTerraceProbe": {
+    "start": [
+      4,
+      2
+    ],
+    "destination": [
+      4,
+      1
+    ],
+    "transition": "H1→H2",
+    "routePreview": true,
+    "landed": true,
+    "undoRestored": true
+  },
+  "normalDefaultPreserved": {
+    "fullHeight80": false,
+    "comparisonPanel": false,
+    "northTerraceLift": 94
+  },
+  "errors": [],
+  "screenshots": [
+    "b-current-front-back-units.png",
+    "b-current-grid-off-full-1920x855.png",
+    "b-current-left-grass-closeup.png",
+    "b-current-north-terrace-closeup.png",
+    "b-grid-on-same-h1-route.png",
+    "c-adjusted-front-back-units.png",
+    "c-adjusted-grid-off-full-1920x855.png",
+    "c-adjusted-left-grass-closeup.png",
+    "c-adjusted-north-terrace-closeup.png",
+    "c-adopted-default-first-open.png",
+    "c-adopted-default-new-tab.png",
+    "c-adopted-default-reload.png",
+    "c-after-zoom-pan.png",
+    "c-compare-controls-open.png",
+    "c-grid-on-h1-route.png",
+    "c-grid-on-same-h1-route.png",
+    "c-h1-landed.png",
+    "c-move-cancel-restored.png",
+    "c-north-h1-h2-crossing.png",
+    "c-north-h1-h2-route-preview.png",
+    "c-north-h1-probe-start.png",
+    "c-north-h1-undo-restored.png",
+    "c-north-h2-landed.png",
+    "c-sidewall-click-rejected.png",
+    "normal-default-unchanged.png"
+  ]
+}
